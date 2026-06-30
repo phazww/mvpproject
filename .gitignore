@@ -1,0 +1,23 @@
+# Ignore archives and backups
+mvpprojects.zip
+
+# Ignore notes and search scratchpads
+nav_search.txt
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and editor files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
