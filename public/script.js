@@ -1460,20 +1460,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     privilegeCards.forEach(card => {
-        card.querySelector('.btn-select-privilege').addEventListener('click', (e) => {
-            e.stopPropagation();
-            privilegeCards.forEach(c => c.classList.remove('selected'));
-            card.classList.add('selected');
+        const durationBtns = card.querySelectorAll('.duration-btn');
+        const priceEl = card.querySelector('.privilege-price');
 
-            selectedPrivilege = {
-                id: card.getAttribute('data-privilege'),
-                name: card.querySelector('.privilege-title').textContent,
-                price: parseInt(card.getAttribute('data-price'), 10)
-            };
+        durationBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
 
-            updateCheckoutSummary();
-            AudioController.playTick();
+                durationBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const price = parseInt(btn.getAttribute('data-price'), 10);
+                card.setAttribute('data-price', price);
+
+                if (priceEl) {
+                    priceEl.innerHTML = `${price} <span class="currency">₽</span>`;
+                }
+
+                // Auto-select this card
+                privilegeCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                const durationText = btn.textContent.trim();
+                selectedPrivilege = {
+                    id: card.getAttribute('data-privilege'),
+                    name: `${card.querySelector('.privilege-title').textContent} (${durationText})`,
+                    price: price
+                };
+
+                updateCheckoutSummary();
+                AudioController.playTick();
+            });
         });
+
+        const selectBtn = card.querySelector('.btn-select-privilege');
+        if (selectBtn) {
+            selectBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                privilegeCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                const activeBtn = card.querySelector('.duration-btn.active');
+                const durationText = activeBtn ? activeBtn.textContent.trim() : '30 дней';
+                const price = parseInt(card.getAttribute('data-price'), 10);
+
+                selectedPrivilege = {
+                    id: card.getAttribute('data-privilege'),
+                    name: `${card.querySelector('.privilege-title').textContent} (${durationText})`,
+                    price: price
+                };
+
+                updateCheckoutSummary();
+                AudioController.playTick();
+            });
+        }
     });
 
     if (steamIdInput) {

@@ -304,15 +304,19 @@
                             <div class="privilege-header">
                                 <span class="privilege-badge">Level 1</span>
                                 <h3 class="privilege-title">Elite</h3>
-                                <div class="privilege-price">250 <span class="currency">₽/мес</span></div>
-                                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">7 дней - 100 ₽ | Навсегда - 400 ₽</div>
+                                <div class="privilege-price">250 <span class="currency">₽</span></div>
+                                <div class="duration-selector">
+                                    <button type="button" class="duration-btn" data-days="7" data-price="100">7 дней</button>
+                                    <button type="button" class="duration-btn active" data-days="30" data-price="250">30 дней</button>
+                                    <button type="button" class="duration-btn" data-days="0" data-price="400">Навсегда</button>
+                                </div>
                             </div>
                             <ul class="privilege-features">
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> xp - 110</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> цветной ник</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> [Elite] приставка</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Антифлеш от команды</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Показ урона</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 110 HP</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Цветной ник в чате</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Префикс [Elite] перед ником</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Иммунитет к флешкам союзников</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Отображение нанесенного урона</li>
                             </ul>
                             <button class="btn btn-select-privilege" type="button">Выбрать</button>
                             <div class="card-glow"></div>
@@ -323,16 +327,20 @@
                             <div class="privilege-header">
                                 <span class="privilege-badge gold">Level 2</span>
                                 <h3 class="privilege-title text-gold">Veteran</h3>
-                                <div class="privilege-price">400 <span class="currency">₽/мес</span></div>
-                                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">7 дней - 250 ₽ | Навсегда - 600 ₽</div>
+                                <div class="privilege-price">400 <span class="currency">₽</span></div>
+                                <div class="duration-selector">
+                                    <button type="button" class="duration-btn" data-days="7" data-price="250">7 дней</button>
+                                    <button type="button" class="duration-btn active" data-days="30" data-price="400">30 дней</button>
+                                    <button type="button" class="duration-btn" data-days="0" data-price="600">Навсегда</button>
+                                </div>
                             </div>
                             <ul class="privilege-features">
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> xp - 120</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> цветной ник & [Veteran] приставка</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Антифлеш от команды & Показ урона</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 1 шприц</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Эмоции + танцы</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 10% скидка в shop & Свечение</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 120 HP</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Цветной ник & Префикс [Veteran]</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Антифлеш от тимейтов & Урон</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 1 шприц (аптечка) каждый раунд</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Доступ к эмоциям и танцам</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Скидка 10% в !shop & Свечение (!glow)</li>
                             </ul>
                             <button class="btn btn-select-privilege btn-gold" type="button">Выбрать</button>
                             <div class="card-glow"></div>
@@ -343,16 +351,21 @@
                             <div class="privilege-header">
                                 <span class="privilege-badge red">Level 3</span>
                                 <h3 class="privilege-title">Champion</h3>
-                                <div class="privilege-price">500 <span class="currency">₽/мес</span></div>
-                                <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">7 дней - 350 ₽ | Навсегда - 900 ₽</div>
+                                <div class="privilege-price">500 <span class="currency">₽</span></div>
+                                <div class="duration-selector">
+                                    <button type="button" class="duration-btn" data-days="7" data-price="350">7 дней</button>
+                                    <button type="button" class="duration-btn active" data-days="30" data-price="500">30 дней</button>
+                                    <button type="button" class="duration-btn" data-days="0" data-price="900">Навсегда</button>
+                                </div>
                             </div>
                             <ul class="privilege-features">
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> xp - 130</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> цветной ник & [Champion] приставка</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Антифлеш от всех & Показ урона</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 2 шприца & Эмоции + танцы</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 20% скидка в shop & Свечение</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> +1 кастомный персонаж на рандом (навсегда)</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 130 HP</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Цветной ник & Префикс [Champion]</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Полный иммунитет к слеповым гранатам</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 2 шприца (аптечки) каждый раунд</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Эмоции + танцы & Свечение (!glow)</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Скидка 20% в !shop</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 1 случайный персонаж (навсегда)</li>
                             </ul>
                             <button class="btn btn-select-privilege" type="button">Выбрать</button>
                             <div class="card-glow"></div>
@@ -363,17 +376,20 @@
                             <div class="privilege-header">
                                 <span class="privilege-badge purple">Top Level</span>
                                 <h3 class="privilege-title">MVP</h3>
-                                <div class="privilege-price">2000 <span class="currency">₽/навсегда</span></div>
+                                <div class="privilege-price">2000 <span class="currency">₽</span></div>
+                                <div class="duration-selector">
+                                    <button type="button" class="duration-btn active" data-days="0" data-price="2000" style="pointer-events: none; width: 100%;">Навсегда</button>
+                                </div>
                             </div>
                             <ul class="privilege-features">
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> xp - 150</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> цветной ник & [MVP] приставка</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Антифлеш от всех & Показ урона</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 150 HP</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Цветной ник & Префикс [MVP]</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Полный антифлеш & Показ урона</li>
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 2 шприца & Эмоции + танцы</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 30% скидка & Свечение</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 3 кастомных скина на персонажа</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 3 рандомных модельки</li>
-                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Админ меню</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Скидка 30% в !shop & Свечение</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 3 случайных кастомных скина</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> 3 случайные модельки оружия</li>
+                                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Доступ к админ-меню (!admin)</li>
                             </ul>
                             <button class="btn btn-select-privilege" type="button">Выбрать</button>
                             <div class="card-glow"></div>
