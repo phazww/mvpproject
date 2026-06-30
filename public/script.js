@@ -623,7 +623,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function restoreSession() {
+    async function restoreSession() {
+        if (window.location.protocol !== 'file:') {
+            try {
+                const res = await fetch('/api/auth/user');
+                const data = await res.json();
+                if (data.authenticated && data.user) {
+                    renderUser(data.user.name, data.user.avatar);
+                    return;
+                }
+            } catch (e) {
+                console.error("Auth check failed:", e);
+            }
+        }
+        
+        // Fallback to local storage
         const username = localStorage.getItem('steam_username');
         const avatar = localStorage.getItem('steam_avatar');
         if (username && avatar) {
@@ -1587,24 +1601,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatEmojiPanel = document.getElementById('chat-emoji-panel');
     const chatBadgeDot = document.getElementById('chat-badge-dot');
 
-    const chatMockUsers = [
-        { name: "ZywOo", badge: "vip", avatar: MOCK_AVATARS[1] },
-        { name: "✪ s1mple", badge: "vip", avatar: MOCK_AVATARS[0] },
-        { name: "m0NESY", badge: "admin", avatar: MOCK_AVATARS[2] },
-        { name: "Admin_Ilya", badge: "owner", avatar: MOCK_AVATARS[3] },
-        { name: "Antigravity", badge: "admin", avatar: MOCK_AVATARS[4] },
-        { name: "donk", badge: "vip", avatar: MOCK_AVATARS[0] }
-    ];
-
-    const initialMessages = [
-        { name: "donk", badge: "vip", text: "сервер реально пушка, пинг шикарный", time: "19:22", avatar: MOCK_AVATARS[0] },
-        { name: "ZywOo", badge: "vip", text: "согласен, маньяк мод настроен топ, без багов", time: "19:25", avatar: MOCK_AVATARS[1] },
-        { name: "m0NESY", badge: "admin", text: "Всем привет! Слежу за чатом, не нарушаем правила.", time: "19:28", avatar: MOCK_AVATARS[2] },
-        { name: "Ghost_Gamer", badge: "", text: "а какие промокоды сейчас активны?", time: "19:30", avatar: MOCK_AVATARS[3] },
-        { name: "✪ s1mple", badge: "vip", text: "LAOWAI дает вроде 30% скидки в магазине привилегий", time: "19:31", avatar: MOCK_AVATARS[0] },
-        { name: "Ghost_Gamer", badge: "", text: "ооо спс щас проверю", time: "19:32", avatar: MOCK_AVATARS[3] }
-    ];
-
+    let socket;
+    if (window.location.protocol !== 'file:') {
+        socket = io();
+    }
     function toggleChat(forceClose = false) {
         if (!chatDrawer) return;
         const isOpen = chatDrawer.classList.contains('open');
@@ -1658,10 +1658,27 @@ document.addEventListener('DOMContentLoaded', () => {
         chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
     }
 
-    // Populate initial chat history
-    if (chatMessagesContainer) {
-        initialMessages.forEach(msg => {
-            appendMessage(msg.name, msg.text, msg.badge, msg.avatar);
+    // Socket.IO Events Listener
+    if (socket) {
+        socket.on('chatHistory', (messages) => {
+            if (chatMessagesContainer) {
+                chatMessagesContainer.innerHTML = '';
+                messages.forEach(msg => {
+                    appendMessage(msg.user, msg.text, msg.rank, msg.avatar);
+                });
+            }
+        });
+
+        socket.on('chatMessage', (msg) => {
+            const isUser = msg.user === localStorage.getItem('steam_username');
+            appendMessage(msg.user, msg.text, msg.rank, msg.avatar, isUser);
+            
+            // Notification dot if closed
+            const isChatOpen = chatDrawer && chatDrawer.classList.contains('open');
+            if (!isChatOpen && chatBadgeDot) {
+                chatBadgeDot.style.display = 'block';
+                AudioController.playTick(); // incoming msg sound
+            }
         });
     }
 
@@ -1669,13 +1686,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = chatMsgInput.value.trim();
         if (!text) return;
         
-        const isAuth = localStorage.getItem('steam_username');
-        const username = isAuth ? isAuth.replace('ID: ', '') : 'Player_' + Math.floor(Math.random() * 900 + 100);
-        const avatar = isAuth ? localStorage.getItem('steam_avatar') : '';
+        const username = localStorage.getItem('steam_username');
+        const avatar = localStorage.getItem('steam_avatar');
 
-        appendMessage(username, text, isAuth ? 'vip' : '', avatar, true);
-        chatMsgInput.value = '';
-        AudioController.playTick();
+        if (!username) {
+            showToast('Для общения в чате нужно войти через Steam!', false);
+            return;
+        }
+
+        if (socket) {
+            socket.emit('chatMessage', {
+                user: username,
+                avatar: avatar,
+                text: text,
+                rank: 'ИГРОК' // Заглушка, в будущем ранг будет браться из БД
+            });
+            chatMsgInput.value = '';
+            AudioController.playTick();
+        }
     }
 
     if (chatSendBtn) {
@@ -1711,37 +1739,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Simulated Chat Activity
-    const simulatedPhrases = [
-        "го след мапу de_dust2_maniac",
-        "лол, как он меня нашел в нычке?",
-        "админы, на сервере читер помогите!",
-        "да ладно тебе, он просто умеет слушать шаги",
-        "скиньте ссылку на дискорд плиз",
-        "купил vip gold, золотой скин просто пушка 🔥",
-        "выжившие, не сидите на одном месте!",
-        "кто пойдет в тиму? пишите лс",
-        "маньяки имба на этой карте",
-        "лол я выжил с 5 хп",
-        "круто сделали сайт, респект разрабам"
-    ];
-
-    setInterval(() => {
-        // Only trigger mock message if chat drawer is open or randomly 10% when closed
-        const isChatOpen = chatDrawer && chatDrawer.classList.contains('open');
-        if (isChatOpen || Math.random() > 0.9) {
-            const user = chatMockUsers[Math.floor(Math.random() * chatMockUsers.length)];
-            const text = simulatedPhrases[Math.floor(Math.random() * simulatedPhrases.length)];
-            
-            appendMessage(user.name, text, user.badge, user.avatar);
-
-            // If closed, trigger a red badge notification
-            if (!isChatOpen && chatBadgeDot) {
-                chatBadgeDot.style.display = 'block';
-            }
-        }
-    }, 12000);
-
+    // Моковые боты чата удалены, работает реальный WebSocket.
 
     // =====================================================
     // SERVER PLAYERS MODAL & SEARCH

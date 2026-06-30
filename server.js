@@ -1,4 +1,6 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
@@ -10,6 +12,11 @@ const SteamStrategy = require('passport-steam').Strategy;
 dotenv.config();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: { origin: '*' }
+});
+
 const PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -76,6 +83,7 @@ app.get('/api/auth/steam',
 app.get('/api/auth/steam/return',
     passport.authenticate('steam', { failureRedirect: '/' }),
     (req, res) => {
+        console.log("Steam Auth Success! User:", req.user ? req.user.displayName : "No User");
         // Успешная авторизация - редирект на главную
         res.redirect('/');
     }
@@ -83,15 +91,21 @@ app.get('/api/auth/steam/return',
 
 // Получение профиля текущего пользователя
 app.get('/api/auth/user', (req, res) => {
+    console.log("Checking auth status. Is authenticated:", req.isAuthenticated());
     if (req.isAuthenticated()) {
-        res.json({
-            authenticated: true,
-            user: {
-                steamId: req.user.id,
-                name: req.user.displayName,
-                avatar: req.user.photos[2].value // Аватарка большого размера
-            }
-        });
+        try {
+            res.json({
+                authenticated: true,
+                user: {
+                    steamId: req.user.id,
+                    name: req.user.displayName,
+                    avatar: req.user.photos && req.user.photos.length > 2 ? req.user.photos[2].value : req.user.photos[0].value
+                }
+            });
+        } catch (e) {
+            console.error("Error parsing user data:", e);
+            res.status(500).json({ error: "Failed to parse user data" });
+        }
     } else {
         res.json({ authenticated: false });
     }
@@ -146,8 +160,40 @@ app.get('/api/stats', (req, res) => {
     res.json(leaderboard);
 });
 
+// =====================================================
+// CHAT WEBSOCKETS (Временная память сервера)
+// =====================================================
+const chatMessages = [
+    { id: 1, user: 'm0NESY', avatar: 'https://ui-avatars.com/api/?name=M&background=1c1c1f&color=D4AF37&bold=true', text: 'Всем привет! Слежу за чатом.', rank: 'ADMIN', time: '01:10' },
+    { id: 2, user: 'donk', avatar: 'https://ui-avatars.com/api/?name=D&background=1c1c1f&color=D4AF37&bold=true', text: 'сервер реально пушка', rank: 'VIP', time: '01:10' }
+];
+
+io.on('connection', (socket) => {
+    // Отправляем текущую историю чата при подключении
+    socket.emit('chatHistory', chatMessages);
+
+    // Принимаем новое сообщение
+    socket.on('chatMessage', (msgData) => {
+        const newMsg = {
+            id: Date.now(),
+            user: msgData.user || 'Игрок',
+            avatar: msgData.avatar || 'https://ui-avatars.com/api/?name=P&background=1c1c1f&color=D4AF37&bold=true',
+            text: msgData.text,
+            rank: msgData.rank || '',
+            time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+        };
+        
+        chatMessages.push(newMsg);
+        // Ограничиваем историю 50 сообщениями
+        if (chatMessages.length > 50) chatMessages.shift();
+        
+        // Рассылаем всем
+        io.emit('chatMessage', newMsg);
+    });
+});
+
 // Старт сервера
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`🚀 Сервер запущен на http://localhost:${PORT}`);
     console.log(`📁 Файлы сайта раздаются из папки /public`);
 });
