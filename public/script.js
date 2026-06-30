@@ -164,23 +164,30 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(hidePreloader, 1000);
             return;
         }
+
+        // Проверяем, видел ли пользователь уже загрузку
+        if (sessionStorage.getItem('preloaderVisited') === 'true') {
+            preloader.style.display = 'none'; // Мгновенно скрываем
+            return;
+        }
+
         for (let i = 0; i < logs.length; i++) {
-            await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 150));
             const line = document.createElement('div');
-            line.style.opacity = '0';
-            line.style.transform = 'translateY(5px)';
-            line.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-            line.textContent = logs[i];
             logsContainer.appendChild(line);
             
-            // Trigger reflow & animate entrance
-            line.offsetHeight; 
-            line.style.opacity = '1';
-            line.style.transform = 'translateY(0)';
-            
-            logsContainer.scrollTop = logsContainer.scrollHeight;
+            const text = logs[i];
+            // Анимация печати букв (Typewriter effect)
+            for (let j = 0; j < text.length; j++) {
+                line.textContent += text[j];
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+                await new Promise(resolve => setTimeout(resolve, 10 + Math.random() * 20)); // Очень быстрая печать
+            }
+            // Пауза между строчками
+            await new Promise(resolve => setTimeout(resolve, 150 + Math.random() * 200));
         }
-        await new Promise(resolve => setTimeout(resolve, 350));
+
+        await new Promise(resolve => setTimeout(resolve, 400));
+        sessionStorage.setItem('preloaderVisited', 'true');
         hidePreloader();
     }
 
@@ -496,31 +503,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function redirectToSteam() {
         if (window.location.protocol === 'file:') {
-            showToast('Steam OpenID требует локального сервера (http). Запуск симуляции...', false);
-            setTimeout(() => {
-                const mockSteamId = 'ID: 7656119' + Math.floor(Math.random() * 10000000);
-                const defaultAvatar = 'https://ui-avatars.com/api/?name=Player&background=1c1c1f&color=D4AF37&bold=true';
-                localStorage.setItem('steam_username', mockSteamId);
-                localStorage.setItem('steam_avatar', defaultAvatar);
-                renderUser(mockSteamId, defaultAvatar);
-                showToast(`Успешный вход (Симуляция)! ${mockSteamId}`);
-            }, 1500);
+            showToast('Steam OpenID работает только через запущенный сервер (http). Откройте сайт через http://localhost:3000', false);
             return;
         }
-
-        const returnTo = window.location.origin + window.location.pathname;
-        const steamOpenIDUrl = 'https://steamcommunity.com/openid/login' +
-            '?openid.ns=http://specs.openid.net/auth/2.0' +
-            '&openid.mode=checkid_setup' +
-            `&openid.return_to=${encodeURIComponent(returnTo)}` +
-            `&openid.realm=${encodeURIComponent(window.location.origin)}` +
-            '&openid.identity=http://specs.openid.net/auth/2.0/identifier_select' +
-            '&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select';
-        
-        showToast('Перенаправление на Steam...');
-        setTimeout(() => {
-            window.location.href = steamOpenIDUrl;
-        }, 800);
+        window.location.href = '/api/auth/steam';
     }
 
     // Render Logged In state in DOM
@@ -953,30 +939,25 @@ document.addEventListener('DOMContentLoaded', () => {
         "Неадекватное поведение", "Мониторинг позиций", "Реклама сторонних сайтов"
     ];
 
-    // Generate 50 Leaderboard Players
-    const leaderboardPlayers = [];
-    for (let i = 1; i <= 50; i++) {
-        const kills = 3500 - (i * 60) - Math.floor(Math.random() * 40);
-        const deaths = 1000 + Math.floor(Math.random() * 800);
-        const hsPercent = Math.floor(Math.random() * 25) + 40; // 40-65%
-        const playtime = 400 - i * 6 - Math.floor(Math.random() * 5);
-        const clanTags = ["MVP", "ONE", "CS2", "WOLF", "HELL", "KILL"];
-        const hasClan = Math.random() > 0.4;
-        const clanTag = hasClan ? clanTags[Math.floor(Math.random() * clanTags.length)] : null;
+    let leaderboardPlayers = [];
+    async function loadLeaderboardData() {
+        try {
+            if (window.location.protocol !== 'file:') {
+                const res = await fetch('/api/stats');
+                if (res.ok) {
+                    leaderboardPlayers = await res.json();
+                }
+            } else {
+                console.warn("Running locally without server, mock stats not generated.");
+            }
+        } catch (e) {
+            console.error('API Error:', e);
+        }
         
-        leaderboardPlayers.push({
-            rank: i,
-            name: MOCK_NAMES[i % MOCK_NAMES.length] + (Math.random() > 0.7 ? "_777" : ""),
-            clanTag: clanTag,
-            avatar: MOCK_AVATARS[i % MOCK_AVATARS.length],
-            kills: kills,
-            deaths: deaths,
-            hsPercent: hsPercent,
-            playtime: Math.max(12, playtime),
-            online: Math.random() > 0.8,
-            steamId: "STEAM_1:0:" + (12345678 + i * 97)
-        });
+        // Initial render after loading
+        renderLeaderboard();
     }
+    loadLeaderboardData();
 
     // Generate 30 Bans/Mutes
     const banList = [];
@@ -1150,8 +1131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initial render
-    renderLeaderboard();
+    // Initial render is now handled in loadLeaderboardData()
 
 
     // =====================================================

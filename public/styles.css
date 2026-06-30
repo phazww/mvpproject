@@ -166,19 +166,22 @@ img {
 .preloader-terminal {
     width: 280px;
     height: 150px;
-    background: rgba(8, 8, 10, 0.7);
-    border: 1px solid var(--border-gold);
+    background: rgba(8, 8, 10, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--radius-md);
-    padding: var(--space-12);
+    padding: var(--space-16);
     font-family: monospace;
     font-size: 0.72rem;
     color: var(--gold-100);
+    text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
     overflow-y: hidden;
     text-align: left;
     display: flex;
     flex-direction: column;
     gap: 4px;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(212, 175, 55, 0.05);
 }
 
 .terminal-logs {
@@ -399,8 +402,9 @@ body:not(.home-active) .navbar {
 .steam-btn {
     display: flex;
     align-items: center;
+    height: 44px;
     gap: var(--space-8);
-    padding: var(--space-8) var(--space-16);
+    padding: 0 var(--space-16);
     background: linear-gradient(135deg, #101216 0%, #1c2029 100%);
     border: 1px solid var(--border-gold);
     border-radius: var(--radius-sm);
