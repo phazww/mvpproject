@@ -1558,34 +1558,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // =====================================================
-    // RULES ACCORDION INTERACTIVITY
     // =====================================================
-    const accordionItems = document.querySelectorAll('.accordion-item');
+    // RULES TAB INTERACTIVITY
+    // =====================================================
+    const ruleTabBtns = document.querySelectorAll('.rules-tab-btn');
+    const rulePanes = document.querySelectorAll('.rule-pane');
 
-    accordionItems.forEach(item => {
-        const trigger = item.querySelector('.accordion-trigger');
-        const content = item.querySelector('.accordion-content');
-
-        trigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const isOpen = item.classList.contains('open');
+    ruleTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active from all
+            ruleTabBtns.forEach(b => b.classList.remove('active'));
+            rulePanes.forEach(p => p.classList.remove('active'));
             
-            // Close other accordions
-            accordionItems.forEach(i => {
-                if (i !== item) {
-                    i.classList.remove('open');
-                    i.querySelector('.accordion-content').style.maxHeight = '0px';
-                }
-            });
-
-            if (isOpen) {
-                item.classList.remove('open');
-                content.style.maxHeight = '0px';
-            } else {
-                item.classList.add('open');
-                content.style.maxHeight = `${content.scrollHeight}px`;
-                AudioController.playTick();
+            // Add active to current
+            btn.classList.add('active');
+            const targetId = btn.getAttribute('data-rule-target');
+            const targetPane = document.getElementById(targetId);
+            if (targetPane) {
+                targetPane.classList.add('active');
             }
+            AudioController.playTick();
         });
     });
 
