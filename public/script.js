@@ -629,6 +629,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const res = await fetch('/api/auth/user');
                 const data = await res.json();
                 if (data.authenticated && data.user) {
+                    localStorage.setItem('steam_username', data.user.name);
+                    localStorage.setItem('steam_avatar', data.user.avatar);
                     renderUser(data.user.name, data.user.avatar);
                     return;
                 }
