@@ -1444,78 +1444,346 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkoutDurationBtns = document.querySelectorAll('.checkout-duration-btn');
     const checkoutDurationGroup = document.getElementById('checkout-duration-group');
 
-    // Premium Custom Skins array
-    const customSkinsStore = [
-        { id: "cskin-selene", title: "Бабочка «Селена»", price: 350, type: "Нож", emoji: "🦋", gradient: "linear-gradient(135deg, #1a0b2e, #4b1b8a)", desc: "Эксклюзивная бабочка с аниме-дизайном." },
-        { id: "cskin-skeleton", title: "Skeleton Anime", price: 600, type: "Персонаж", emoji: "💀", gradient: "linear-gradient(135deg, #111, #bdc3c7)", desc: "Моделька персонажа со светящимися эффектами." },
-        { id: "cskin-jason", title: "Jason Voorhees", price: 500, type: "Персонаж", emoji: "🪓", gradient: "linear-gradient(135deg, #4a0d0d, #2c0808)", desc: "Модель маньяка Пятницы 13 с озвучкой." },
-        { id: "cskin-lara", title: "Lara Croft", price: 450, type: "Персонаж", emoji: "🏹", gradient: "linear-gradient(135deg, #1e3c72, #2a5298)", desc: "Проработанный скин Лары Крофт." },
-        { id: "cskin-nebula", title: "M9 «Nebula»", price: 300, type: "Нож", emoji: "🌌", gradient: "linear-gradient(135deg, #0f2027, #203a43)", desc: "Космический M9 Bayonet с кастомным блеском." },
-        { id: "cskin-ghostface", title: "Ghostface", price: 400, type: "Персонаж", emoji: "😱", gradient: "linear-gradient(135deg, #000, #333)", desc: "Классическая маска Крика." }
+    // Premium Store Products array
+    const storeProducts = [
+        // Category: privileges (Привилегии)
+        {
+            id: "elite",
+            category: "privileges",
+            title: "Elite",
+            badge: "LEVEL 1",
+            price7: 100, price30: 250, price0: 400,
+            bannerClass: "elite-banner",
+            features: [
+                "Здоровье: 110 HP",
+                "Цветной ник в чате",
+                "Префикс [Elite] перед ником",
+                "Иммунитет к флешкам союзников",
+                "Отображение нанесенного урона"
+            ]
+        },
+        {
+            id: "veteran",
+            category: "privileges",
+            title: "Veteran",
+            badge: "LEVEL 2",
+            price7: 250, price30: 400, price0: 600,
+            bannerClass: "veteran-banner",
+            features: [
+                "Здоровье: 120 HP",
+                "Цветной ник & Префикс [Veteran]",
+                "Антифлеш от тимейтов & Урон",
+                "1 шприц (аптечка) каждый раунд",
+                "Доступ к эмоциям и танцам",
+                "Скидка 10% в !shop & Свечение (!glow)"
+            ]
+        },
+        // Category: weapons (Кастомные оружия)
+        {
+            id: "cskin-selene",
+            category: "weapons",
+            title: "Бабочка «Селена»",
+            badge: "НОЖ",
+            price0: 350,
+            bannerStyle: "background: linear-gradient(135deg, #1a0b2e, #4b1b8a);",
+            emoji: "🦋",
+            features: [
+                "Эксклюзивная бабочка с аниме-дизайном.",
+                "Видна всем на сервере.",
+                "Уникальная анимация осмотра."
+            ]
+        },
+        {
+            id: "cskin-nebula",
+            category: "weapons",
+            title: "M9 «Nebula»",
+            badge: "НОЖ",
+            price0: 300,
+            bannerStyle: "background: linear-gradient(135deg, #0f2027, #203a43);",
+            emoji: "🌌",
+            features: [
+                "Космический M9 Bayonet с кастомным блеском.",
+                "Уникальные звуки ударов.",
+                "Виден всем игрокам на сервере."
+            ]
+        },
+        // Category: characters (Персонажи)
+        {
+            id: "cskin-skeleton",
+            category: "characters",
+            title: "Skeleton Anime",
+            badge: "ПЕРСОНАЖ",
+            price0: 600,
+            bannerStyle: "background: linear-gradient(135deg, #111, #bdc3c7);",
+            emoji: "💀",
+            features: [
+                "Моделька персонажа со светящимися эффектами.",
+                "Уникальный хитбокс-дизайн.",
+                "Выделяется в таблице счета."
+            ]
+        },
+        {
+            id: "cskin-jason",
+            category: "characters",
+            title: "Jason Voorhees",
+            badge: "ПЕРСОНАЖ",
+            price0: 500,
+            bannerStyle: "background: linear-gradient(135deg, #4a0d0d, #2c0808);",
+            emoji: "🪓",
+            features: [
+                "Модель маньяка Пятницы 13.",
+                "Кастомная озвучка шагов и криков.",
+                "Иммунитет к звукам испуга."
+            ]
+        },
+        {
+            id: "cskin-lara",
+            category: "characters",
+            title: "Lara Croft",
+            badge: "ПЕРСОНАЖ",
+            price0: 450,
+            bannerStyle: "background: linear-gradient(135deg, #1e3c72, #2a5298);",
+            emoji: "🏹",
+            features: [
+                "Проработанный скин Лары Крофт.",
+                "Кастомные анимации паркура.",
+                "Видна всем на сервере."
+            ]
+        },
+        {
+            id: "cskin-ghostface",
+            category: "characters",
+            title: "Ghostface",
+            badge: "ПЕРСОНАЖ",
+            price0: 400,
+            bannerStyle: "background: linear-gradient(135deg, #000, #333);",
+            emoji: "😱",
+            features: [
+                "Классическая маска Крика.",
+                "Измененный голос при радиокомандах.",
+                "Виден всем на сервере."
+            ]
+        },
+        // Category: admins (Админ права)
+        {
+            id: "champion",
+            category: "admins",
+            title: "Champion",
+            badge: "LEVEL 3 ADMIN",
+            price7: 350, price30: 500, price0: 900,
+            bannerClass: "champion-banner",
+            features: [
+                "Здоровье: 130 HP",
+                "Цветной ник & Префикс [Champion]",
+                "Полный иммунитет к слеповым гранатам",
+                "2 шприца (аптечки) каждый раунд",
+                "Эмоции + танцы & Свечение (!glow)",
+                "Скидка 20% в !shop & 1 скин навсегда"
+            ]
+        },
+        {
+            id: "mvp",
+            category: "admins",
+            title: "MVP",
+            badge: "TOP ADMIN",
+            price7: 2000, price30: 2000, price0: 2000,
+            bannerClass: "mvp-banner",
+            features: [
+                "Здоровье: 150 HP",
+                "Цветной ник & Префикс [MVP]",
+                "Полный антифлеш & Показ урона",
+                "2 шприца & Эмоции + танцы",
+                "Скидка 30% в !shop & Свечение",
+                "3 скина & 3 модели оружия",
+                "Полный доступ к админ-меню (!admin)"
+            ]
+        },
+        // Category: other (Остальное)
+        {
+            id: "unban",
+            category: "other",
+            title: "Разбан профиля",
+            badge: "СЕРВИС",
+            price0: 150,
+            bannerStyle: "background: linear-gradient(135deg, #134e5e, #71b280);",
+            emoji: "🔓",
+            features: [
+                "Полная амнистия вашего Steam ID.",
+                "Удаление записи из банлиста.",
+                "Моментальная разблокировка."
+            ]
+        },
+        {
+            id: "unmute",
+            category: "other",
+            title: "Размут чата/микро",
+            badge: "СЕРВИС",
+            price0: 100,
+            bannerStyle: "background: linear-gradient(135deg, #c0392b, #8e44ad);",
+            emoji: "🔊",
+            features: [
+                "Разблокировка голосового и текстового чата.",
+                "Снятие ограничений на общение.",
+                "Моментально после оплаты."
+            ]
+        },
+        {
+            id: "clantag",
+            category: "other",
+            title: "Кастомный клан-тег",
+            badge: "УСЛУГА",
+            price0: 50,
+            bannerStyle: "background: linear-gradient(135deg, #f39c12, #d35400);",
+            emoji: "🏷️",
+            features: [
+                "Установка любого клан-тега в игре.",
+                "Любой цвет клан-тега в чате.",
+                "Редактирование через !tag."
+            ]
+        }
     ];
 
-    const customSkinsCards = document.querySelector('.custom-skins-cards');
+    const storeProductsGrid = document.querySelector('.store-products-grid');
+    let activeStoreTab = 'privileges';
 
-    function renderCustomSkinsStore() {
-        if (!customSkinsCards) return;
-        if (customSkinsCards.children.length > 0) return; // avoid duplicate rendering
+    function renderStoreProducts() {
+        if (!storeProductsGrid) return;
+        storeProductsGrid.innerHTML = '';
 
-        customSkinsStore.forEach(skin => {
+        const items = storeProducts.filter(item => item.category === activeStoreTab);
+
+        items.forEach(product => {
             const card = document.createElement('div');
-            card.className = 'privilege-card reveal';
-            card.setAttribute('data-privilege', skin.id);
-            card.setAttribute('data-price-0', skin.price);
-            card.setAttribute('data-price', skin.price);
+            
+            // Build classes based on rank
+            let extraClasses = '';
+            if (product.id === 'veteran') extraClasses = ' premium';
+            if (product.id === 'champion') extraClasses = ' admin';
+            if (product.id === 'mvp') extraClasses = ' mvp';
+
+            card.className = `privilege-card reveal${extraClasses}`;
+            card.setAttribute('data-privilege', product.id);
+
+            // Setup price attributes
+            if (product.price7 !== undefined) card.setAttribute('data-price-7', product.price7);
+            if (product.price30 !== undefined) card.setAttribute('data-price-30', product.price30);
+            if (product.price0 !== undefined) card.setAttribute('data-price-0', product.price0);
+
+            // Determine default price to display on card
+            let defaultPrice = product.price30 !== undefined ? product.price30 : product.price0;
+            card.setAttribute('data-price', defaultPrice);
+
+            // Set up banner HTML
+            let bannerHtml = '';
+            if (product.bannerStyle) {
+                bannerHtml = `
+                    <div class="privilege-banner" style="${product.bannerStyle}">
+                        <span class="banner-label">${product.badge}</span>
+                        <h3 class="banner-title" style="font-size: 1.4rem;">${product.title}</h3>
+                    </div>
+                `;
+            } else {
+                bannerHtml = `
+                    <div class="privilege-banner ${product.bannerClass}">
+                        <span class="banner-label">${product.badge}</span>
+                        <h3 class="banner-title">${product.title}</h3>
+                    </div>
+                `;
+            }
+
+            // Set up icon preview if exists
+            let previewHtml = '';
+            if (product.emoji) {
+                previewHtml = `
+                    <div class="skin-store-preview">
+                        <div class="skin-banner-icon" style="color: var(--gold-300);">${product.emoji}</div>
+                    </div>
+                `;
+            }
+
+            // Set up price hint text
+            let priceHint = '';
+            if (product.price7 !== undefined) {
+                priceHint = `от ${product.price7} ₽`;
+            } else {
+                priceHint = 'навсегда';
+            }
+
+            // Build features list
+            const featuresHtml = product.features.map(feat => {
+                return `<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${feat}</li>`;
+            }).join('');
+
+            // If selected previously, add class
+            if (selectedPrivilege && selectedPrivilege.id === product.id) {
+                card.classList.add('selected');
+            }
 
             card.innerHTML = `
-                <div class="privilege-banner" style="background: ${skin.gradient};">
-                    <span class="banner-label">${skin.type.toUpperCase()}</span>
-                    <h3 class="banner-title" style="font-size: 1.4rem;">${skin.title}</h3>
-                </div>
-                <div class="skin-store-preview">
-                    <div class="skin-banner-icon" style="color: ${skin.gradient.includes('4b1b8a') ? '#9b5de5' : (skin.gradient.includes('4a0d0d') ? '#ff4940' : '#f6b949')}">${skin.emoji}</div>
-                </div>
-                <div class="privilege-header" style="margin-top: auto;">
-                    <div class="privilege-price">${skin.price} <span class="currency">₽</span></div>
-                    <div class="price-hint">навсегда</div>
+                ${bannerHtml}
+                ${previewHtml}
+                <div class="privilege-header" style="${product.emoji ? 'margin-top: auto;' : ''}">
+                    <div class="privilege-price">${defaultPrice} <span class="currency">₽</span></div>
+                    <div class="price-hint">${priceHint}</div>
                 </div>
                 <ul class="privilege-features">
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${skin.desc}</li>
-                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Виден всем на сервере</li>
+                    ${featuresHtml}
                 </ul>
                 <button class="btn btn-select-privilege" type="button">Выбрать</button>
                 <div class="card-glow"></div>
             `;
 
-            // Dynamic mouse glow
+            // Mouse glow tracking
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
                 card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
                 card.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
             });
 
-            // Handle select click
+            // Select button handler
             card.querySelector('.btn-select-privilege').addEventListener('click', (e) => {
                 e.stopPropagation();
                 document.querySelectorAll('.privilege-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
 
-                // Enforce permanent (0) duration in sidebar
-                selectedDurationDays = 0;
-                checkoutDurationBtns.forEach(b => {
-                    if (b.getAttribute('data-days') === '0') {
-                        b.classList.add('active');
-                    } else {
-                        b.classList.remove('active');
-                        b.style.opacity = '0.3';
-                        b.style.pointerEvents = 'none';
+                const isPermanent = product.price7 === undefined || product.id === 'mvp';
+
+                if (isPermanent) {
+                    selectedDurationDays = 0;
+                    checkoutDurationBtns.forEach(b => {
+                        if (b.getAttribute('data-days') === '0') {
+                            b.classList.add('active');
+                        } else {
+                            b.classList.remove('active');
+                            b.style.opacity = '0.3';
+                            b.style.pointerEvents = 'none';
+                        }
+                    });
+                } else {
+                    checkoutDurationBtns.forEach(b => {
+                        b.style.opacity = '1';
+                        b.style.pointerEvents = 'auto';
+                    });
+                    const activeBtn = document.querySelector('.checkout-duration-btn.active');
+                    if (activeBtn) {
+                        selectedDurationDays = parseInt(activeBtn.getAttribute('data-days'), 10);
                     }
-                });
+                }
+
+                const durationText = isPermanent ? 'Навсегда' : 
+                                     (selectedDurationDays === 7 ? '7 дней' : 
+                                     (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
+
+                let priceAttr = `data-price-${selectedDurationDays}`;
+                if (isPermanent) priceAttr = 'data-price-0';
+                const price = parseInt(card.getAttribute(priceAttr), 10);
+
+                const prefix = product.category === 'weapons' ? 'Скин' : (product.category === 'characters' ? 'Персонаж' : (product.category === 'other' ? 'Услуга' : 'Привилегия'));
 
                 selectedPrivilege = {
-                    id: skin.id,
-                    name: `Скин: ${skin.title} (Навсегда)`,
-                    price: skin.price
+                    id: product.id,
+                    name: `${prefix}: ${product.title} (${durationText})`,
+                    price: price
                 };
 
                 updateCheckoutSummary();
@@ -1529,31 +1797,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 AudioController.playTick();
             });
 
-            customSkinsCards.appendChild(card);
+            storeProductsGrid.appendChild(card);
         });
     }
 
-    // Set up Store Tabs
+    // Set up store tab button listeners
     const storeTabBtns = document.querySelectorAll('.store-tab-btn');
-    const privilegesCards = document.querySelector('.privileges-cards');
-
     storeTabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             storeTabBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            const activeTab = btn.getAttribute('data-store-tab');
-            if (activeTab === 'privileges') {
-                privilegesCards.style.display = 'grid';
-                customSkinsCards.style.display = 'none';
-            } else {
-                privilegesCards.style.display = 'none';
-                customSkinsCards.style.display = 'grid';
-                renderCustomSkinsStore();
-            }
+            activeStoreTab = btn.getAttribute('data-store-tab');
+            renderStoreProducts();
             AudioController.playTick();
         });
     });
+
+    // Render default category
+    renderStoreProducts();
 
     function updateCheckoutPrice() {
         if (!selectedPrivilege) return;
@@ -1561,7 +1823,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const card = document.querySelector(`.privilege-card[data-privilege="${selectedPrivilege.id}"]`);
         if (!card) return;
 
-        const isPermanent = selectedPrivilege.id.startsWith('cskin-') || selectedPrivilege.id === 'mvp';
+        const product = storeProducts.find(item => item.id === selectedPrivilege.id);
+        const isPermanent = product.price7 === undefined || product.id === 'mvp';
+
         let priceAttr = `data-price-${selectedDurationDays}`;
         if (isPermanent) {
             priceAttr = 'data-price-0';
@@ -1572,10 +1836,9 @@ document.addEventListener('DOMContentLoaded', () => {
                              (selectedDurationDays === 7 ? '7 дней' : 
                              (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
 
-        const cleanTitle = card.querySelector('.privilege-title')?.textContent || card.querySelector('.banner-title')?.textContent || '';
-        const prefix = selectedPrivilege.id.startsWith('cskin-') ? 'Скин' : 'Привилегия';
+        const prefix = product.category === 'weapons' ? 'Скин' : (product.category === 'characters' ? 'Персонаж' : (product.category === 'other' ? 'Услуга' : 'Привилегия'));
         
-        selectedPrivilege.name = `${prefix}: ${cleanTitle} (${durationText})`;
+        selectedPrivilege.name = `${prefix}: ${product.title} (${durationText})`;
         selectedPrivilege.price = price;
 
         updateCheckoutSummary();
@@ -1591,72 +1854,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCheckoutPrice();
             AudioController.playTick();
         });
-    });
-
-    privilegeCards.forEach(card => {
-        // Skip dynamically created skins buttons as they bind their own click logic
-        if (card.classList.contains('skin-card') || card.getAttribute('data-privilege').startsWith('cskin-')) return;
-
-        const selectBtn = card.querySelector('.btn-select-privilege');
-        if (selectBtn) {
-            selectBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                document.querySelectorAll('.privilege-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-
-                const privilegeId = card.getAttribute('data-privilege');
-                
-                // If selecting MVP, enforce lifetime (0) duration in sidebar
-                if (privilegeId === 'mvp') {
-                    selectedDurationDays = 0;
-                    checkoutDurationBtns.forEach(b => {
-                        if (b.getAttribute('data-days') === '0') {
-                            b.classList.add('active');
-                        } else {
-                            b.classList.remove('active');
-                            b.style.opacity = '0.3';
-                            b.style.pointerEvents = 'none';
-                        }
-                    });
-                } else {
-                    // Restore active states for other ranks
-                    checkoutDurationBtns.forEach(b => {
-                        b.style.opacity = '1';
-                        b.style.pointerEvents = 'auto';
-                    });
-                    
-                    // Keep the current active selection
-                    const activeBtn = document.querySelector('.checkout-duration-btn.active');
-                    if (activeBtn) {
-                        selectedDurationDays = parseInt(activeBtn.getAttribute('data-days'), 10);
-                    }
-                }
-
-                const durationText = (privilegeId === 'mvp') ? 'Навсегда' : 
-                                     (selectedDurationDays === 7 ? '7 дней' : 
-                                     (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
-
-                let priceAttr = `data-price-${selectedDurationDays}`;
-                if (privilegeId === 'mvp') priceAttr = 'data-price-0';
-                const price = parseInt(card.getAttribute(priceAttr), 10);
-
-                selectedPrivilege = {
-                    id: privilegeId,
-                    name: `${card.querySelector('.banner-title')?.textContent || 'Привилегия'} (${durationText})`,
-                    price: price
-                };
-
-                updateCheckoutSummary();
-                
-                // Scroll smoothly to checkout form for better UX on mobile
-                const checkoutForm = document.getElementById('checkout-form');
-                if (checkoutForm && window.innerWidth < 992) {
-                    checkoutForm.scrollIntoView({ behavior: 'smooth' });
-                }
-                
-                AudioController.playTick();
-            });
-        }
     });
 
     if (steamIdInput) {
