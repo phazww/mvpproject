@@ -1908,14 +1908,18 @@ body:not(.home-active) .navbar {
 
 .privilege-card {
     position: relative;
-    background: var(--bg-surface);
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.75) 0%, rgba(10, 10, 15, 0.95) 100%) padding-box;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
-    padding: var(--space-24);
+    border-radius: var(--radius-xl);
+    padding: var(--space-32) var(--space-24);
     display: flex;
     flex-direction: column;
     gap: var(--space-24);
     overflow: hidden;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.1), 
+                0 12px 32px rgba(0, 0, 0, 0.5);
     transition: transform 0.25s var(--ease-out-back), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
@@ -1927,35 +1931,45 @@ body:not(.home-active) .navbar {
 .privilege-card:not(.premium):not(.admin):not(.mvp):hover {
     transform: translateY(-4px);
     border-color: rgba(200, 200, 200, 0.5);
-    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.02), 0 0 20px rgba(200, 200, 200, 0.05);
+    box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.15),
+                0 20px 40px rgba(0, 0, 0, 0.6), 
+                0 0 20px rgba(200, 200, 200, 0.05);
 }
 
 /* Card 2: Veteran (Gold Theme) */
 .privilege-card.premium {
-    border-color: rgba(212, 175, 55, 0.25);
-    background: linear-gradient(180deg, rgba(212, 175, 55, 0.02) 0%, var(--bg-surface) 100%);
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.02);
+    border: 1px solid transparent;
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.75) 0%, rgba(10, 10, 15, 0.95) 100%) padding-box,
+                linear-gradient(180deg, rgba(212, 175, 55, 0.25) 0%, rgba(212, 175, 55, 0.05) 100%) border-box;
+    box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.12),
+                0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
 .privilege-card.premium:hover {
     transform: translateY(-4px);
-    border-color: var(--gold-300);
-    box-shadow: var(--shadow-lg), var(--shadow-gold), 0 0 20px rgba(212, 175, 55, 0.06);
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.75) 0%, rgba(10, 10, 15, 0.95) 100%) padding-box,
+                linear-gradient(180deg, rgba(212, 175, 55, 0.6) 0%, rgba(212, 175, 55, 0.2) 100%) border-box;
+    box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.2),
+                0 24px 48px rgba(0, 0, 0, 0.65),
+                0 0 24px rgba(212, 175, 55, 0.08);
 }
 
 /* Card 3: Champion (Red-Gold Theme via Gradient Border) */
 .privilege-card.admin {
     border: 1px solid transparent;
-    background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.75) 0%, rgba(10, 10, 15, 0.95) 100%) padding-box,
                 linear-gradient(135deg, rgba(220, 53, 69, 0.4) 0%, rgba(246, 185, 73, 0.4) 100%) border-box;
-    box-shadow: 0 4px 20px rgba(220, 53, 69, 0.02);
+    box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.12),
+                0 12px 32px rgba(0, 0, 0, 0.5);
 }
 
 .privilege-card.admin:hover {
     transform: translateY(-4px);
-    background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+    background: linear-gradient(135deg, rgba(20, 20, 25, 0.75) 0%, rgba(10, 10, 15, 0.95) 100%) padding-box,
                 linear-gradient(135deg, #ff4940 0%, #f6b949 100%) border-box;
-    box-shadow: 0 12px 30px rgba(255, 73, 64, 0.12), 0 0 24px rgba(246, 185, 73, 0.08);
+    box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.2),
+                0 24px 48px rgba(255, 73, 64, 0.15),
+                0 0 28px rgba(246, 185, 73, 0.1);
 }
 
 /* Card 4: MVP (Animated Purple Border + Ultra Glow Theme) */
@@ -2030,58 +2044,49 @@ body:not(.home-active) .navbar {
 }
 
 /* --- Duration Selector (Segment Control) --- */
-.duration-selector {
+/* --- Global Duration Toggle --- */
+.store-duration-container {
     display: flex;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px solid var(--border-light);
-    border-radius: var(--radius-md);
-    padding: 3px;
-    gap: 4px;
-    margin-top: var(--space-12);
+    justify-content: center;
+    margin-bottom: var(--space-32);
 }
 
-.duration-btn {
-    flex: 1;
+.store-duration-toggle {
+    position: relative;
+    display: flex;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-full);
+    padding: 4px;
+    gap: 4px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 
+                0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.global-duration-btn {
+    position: relative;
+    z-index: 2;
     background: transparent;
     border: none;
     outline: none;
     color: var(--text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    padding: 8px 12px;
-    border-radius: calc(var(--radius-md) - 2px);
+    padding: 10px 24px;
+    border-radius: var(--radius-full);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
     text-align: center;
-    white-space: nowrap;
 }
 
-.duration-btn:hover {
+.global-duration-btn:hover {
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.04);
 }
 
-.duration-btn.active {
+.global-duration-btn.active {
     background: var(--gold-300);
     color: var(--bg-void);
-    box-shadow: var(--shadow-sm), 0 0 12px rgba(212, 175, 55, 0.15);
-}
-
-/* Color theme-matching active state for Champion (red) and MVP (purple) */
-.privilege-card.admin .duration-btn.active {
-    background: var(--red);
-    color: var(--white);
-    box-shadow: var(--shadow-sm), 0 0 12px rgba(255, 73, 64, 0.2);
-}
-
-.privilege-card[data-privilege="mvp"] .duration-btn.active {
-    background: var(--purple);
-    color: var(--white);
-    box-shadow: var(--shadow-sm), 0 0 12px rgba(112, 69, 168, 0.2);
-}
-
-.privilege-card.selected .duration-selector {
-    border-color: var(--border-gold-strong);
+    box-shadow: 0 2px 12px rgba(212, 175, 55, 0.3);
 }
 
 .privilege-features {

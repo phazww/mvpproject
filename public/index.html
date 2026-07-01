@@ -295,21 +295,26 @@
                 <h2 class="section-title">Магазин <span class="text-gold">привилегий</span></h2>
                 <p class="section-desc">Выберите подходящую услугу, введите данные и перейдите к оплате. Все привилегии выдаются автоматически.</p>
             </div>
+
+            <!-- Global Duration Switcher -->
+            <div class="store-duration-container reveal">
+                <div class="store-duration-toggle">
+                    <button type="button" class="global-duration-btn" data-days="7">7 дней</button>
+                    <button type="button" class="global-duration-btn active" data-days="30">30 дней</button>
+                    <button type="button" class="global-duration-btn" data-days="0">Навсегда</button>
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
             
             <div class="store-grid">
                 <div class="store-main">
                     <div class="privileges-cards">
                         <!-- Card 1 -->
-                        <div class="privilege-card reveal" data-privilege="elite" data-price="250">
+                        <div class="privilege-card reveal" data-privilege="elite" data-price-7="100" data-price-30="250" data-price-0="400" data-price="250">
                             <div class="privilege-header">
                                 <span class="privilege-badge">Level 1</span>
                                 <h3 class="privilege-title">Elite</h3>
                                 <div class="privilege-price">250 <span class="currency">₽</span></div>
-                                <div class="duration-selector">
-                                    <button type="button" class="duration-btn" data-days="7" data-price="100">7 дней</button>
-                                    <button type="button" class="duration-btn active" data-days="30" data-price="250">30 дней</button>
-                                    <button type="button" class="duration-btn" data-days="0" data-price="400">Навсегда</button>
-                                </div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 110 HP</li>
@@ -323,16 +328,11 @@
                         </div>
 
                         <!-- Card 2 -->
-                        <div class="privilege-card premium reveal" data-privilege="veteran" data-price="400">
+                        <div class="privilege-card premium reveal" data-privilege="veteran" data-price-7="250" data-price-30="400" data-price-0="600" data-price="400">
                             <div class="privilege-header">
                                 <span class="privilege-badge gold">Level 2</span>
                                 <h3 class="privilege-title text-gold">Veteran</h3>
                                 <div class="privilege-price">400 <span class="currency">₽</span></div>
-                                <div class="duration-selector">
-                                    <button type="button" class="duration-btn" data-days="7" data-price="250">7 дней</button>
-                                    <button type="button" class="duration-btn active" data-days="30" data-price="400">30 дней</button>
-                                    <button type="button" class="duration-btn" data-days="0" data-price="600">Навсегда</button>
-                                </div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 120 HP</li>
@@ -347,16 +347,11 @@
                         </div>
 
                         <!-- Card 3 -->
-                        <div class="privilege-card admin reveal" data-privilege="champion" data-price="500">
+                        <div class="privilege-card admin reveal" data-privilege="champion" data-price-7="350" data-price-30="500" data-price-0="900" data-price="500">
                             <div class="privilege-header">
                                 <span class="privilege-badge red">Level 3</span>
                                 <h3 class="privilege-title">Champion</h3>
                                 <div class="privilege-price">500 <span class="currency">₽</span></div>
-                                <div class="duration-selector">
-                                    <button type="button" class="duration-btn" data-days="7" data-price="350">7 дней</button>
-                                    <button type="button" class="duration-btn active" data-days="30" data-price="500">30 дней</button>
-                                    <button type="button" class="duration-btn" data-days="0" data-price="900">Навсегда</button>
-                                </div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 130 HP</li>
@@ -372,14 +367,11 @@
                         </div>
 
                         <!-- Card 4 -->
-                        <div class="privilege-card mvp reveal" data-privilege="mvp" data-price="2000">
+                        <div class="privilege-card mvp reveal" data-privilege="mvp" data-price-7="2000" data-price-30="2000" data-price-0="2000" data-price="2000">
                             <div class="privilege-header">
                                 <span class="privilege-badge purple">Top Level</span>
                                 <h3 class="privilege-title">MVP</h3>
                                 <div class="privilege-price">2000 <span class="currency">₽</span></div>
-                                <div class="duration-selector">
-                                    <button type="button" class="duration-btn active" data-days="0" data-price="2000" style="pointer-events: none; width: 100%;">Навсегда</button>
-                                </div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 150 HP</li>

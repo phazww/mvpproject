@@ -1459,40 +1459,56 @@ document.addEventListener('DOMContentLoaded', () => {
         checkoutSubmitBtn.disabled = !steamIdInput.value.trim();
     }
 
-    privilegeCards.forEach(card => {
-        const durationBtns = card.querySelectorAll('.duration-btn');
-        const priceEl = card.querySelector('.privilege-price');
+    let selectedDurationDays = 30; // default to 30 days
+    const globalDurationBtns = document.querySelectorAll('.global-duration-btn');
 
-        durationBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
+    function updateCardPrices() {
+        privilegeCards.forEach(card => {
+            const privilegeId = card.getAttribute('data-privilege');
+            const priceEl = card.querySelector('.privilege-price');
+            
+            // MVP only has lifetime option (2000)
+            let priceAttr = `data-price-${selectedDurationDays}`;
+            if (privilegeId === 'mvp') {
+                priceAttr = 'data-price-0';
+            }
+            
+            const price = parseInt(card.getAttribute(priceAttr), 10);
+            card.setAttribute('data-price', price);
+            
+            if (priceEl) {
+                priceEl.innerHTML = `${price} <span class="currency">₽</span>`;
+            }
 
-                durationBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const price = parseInt(btn.getAttribute('data-price'), 10);
-                card.setAttribute('data-price', price);
-
-                if (priceEl) {
-                    priceEl.innerHTML = `${price} <span class="currency">₽</span>`;
-                }
-
-                // Auto-select this card
-                privilegeCards.forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-
-                const durationText = btn.textContent.trim();
+            // If this card is currently selected, update the checkout detail
+            if (card.classList.contains('selected')) {
+                const durationText = (privilegeId === 'mvp') ? 'Навсегда' : 
+                                     (selectedDurationDays === 7 ? '7 дней' : 
+                                     (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
+                
                 selectedPrivilege = {
-                    id: card.getAttribute('data-privilege'),
+                    id: privilegeId,
                     name: `${card.querySelector('.privilege-title').textContent} (${durationText})`,
                     price: price
                 };
-
                 updateCheckoutSummary();
-                AudioController.playTick();
-            });
+            }
         });
+    }
 
+    // Set up global duration toggle event listeners
+    globalDurationBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            globalDurationBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            selectedDurationDays = parseInt(btn.getAttribute('data-days'), 10);
+            updateCardPrices();
+            AudioController.playTick();
+        });
+    });
+
+    privilegeCards.forEach(card => {
         const selectBtn = card.querySelector('.btn-select-privilege');
         if (selectBtn) {
             selectBtn.addEventListener('click', (e) => {
@@ -1500,12 +1516,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 privilegeCards.forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
 
-                const activeBtn = card.querySelector('.duration-btn.active');
-                const durationText = activeBtn ? activeBtn.textContent.trim() : '30 дней';
+                const privilegeId = card.getAttribute('data-privilege');
+                const durationText = (privilegeId === 'mvp') ? 'Навсегда' : 
+                                     (selectedDurationDays === 7 ? '7 дней' : 
+                                     (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
                 const price = parseInt(card.getAttribute('data-price'), 10);
 
                 selectedPrivilege = {
-                    id: card.getAttribute('data-privilege'),
+                    id: privilegeId,
                     name: `${card.querySelector('.privilege-title').textContent} (${durationText})`,
                     price: price
                 };
