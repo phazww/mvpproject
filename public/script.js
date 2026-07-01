@@ -790,8 +790,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ─── Feature Card Glow Tracking (translate3d Reflow optimization) ─
-    document.querySelectorAll('.feat-card').forEach(card => {
+    // ─── Card Glow Tracking (translate3d Reflow optimization) ─
+    document.querySelectorAll('.feat-card, .privilege-card').forEach(card => {
         card.addEventListener('mousemove', e => {
             const rect = card.getBoundingClientRect();
             card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
@@ -1460,50 +1460,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let selectedDurationDays = 30; // default to 30 days
-    const globalDurationBtns = document.querySelectorAll('.global-duration-btn');
+    const checkoutDurationBtns = document.querySelectorAll('.checkout-duration-btn');
+    const checkoutDurationGroup = document.getElementById('checkout-duration-group');
 
-    function updateCardPrices() {
-        privilegeCards.forEach(card => {
-            const privilegeId = card.getAttribute('data-privilege');
-            const priceEl = card.querySelector('.privilege-price');
-            
-            // MVP only has lifetime option (2000)
-            let priceAttr = `data-price-${selectedDurationDays}`;
-            if (privilegeId === 'mvp') {
-                priceAttr = 'data-price-0';
-            }
-            
-            const price = parseInt(card.getAttribute(priceAttr), 10);
-            card.setAttribute('data-price', price);
-            
-            if (priceEl) {
-                priceEl.innerHTML = `${price} <span class="currency">₽</span>`;
-            }
+    function updateCheckoutPrice() {
+        if (!selectedPrivilege) return;
 
-            // If this card is currently selected, update the checkout detail
-            if (card.classList.contains('selected')) {
-                const durationText = (privilegeId === 'mvp') ? 'Навсегда' : 
-                                     (selectedDurationDays === 7 ? '7 дней' : 
-                                     (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
-                
-                selectedPrivilege = {
-                    id: privilegeId,
-                    name: `${card.querySelector('.privilege-title').textContent} (${durationText})`,
-                    price: price
-                };
-                updateCheckoutSummary();
-            }
-        });
+        const card = document.querySelector(`.privilege-card[data-privilege="${selectedPrivilege.id}"]`);
+        if (!card) return;
+
+        let priceAttr = `data-price-${selectedDurationDays}`;
+        if (selectedPrivilege.id === 'mvp') {
+            priceAttr = 'data-price-0'; // MVP is always lifetime
+        }
+
+        const price = parseInt(card.getAttribute(priceAttr), 10);
+        const durationText = (selectedPrivilege.id === 'mvp') ? 'Навсегда' : 
+                             (selectedDurationDays === 7 ? '7 дней' : 
+                             (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
+
+        selectedPrivilege.name = `${card.querySelector('.privilege-title').textContent} (${durationText})`;
+        selectedPrivilege.price = price;
+
+        updateCheckoutSummary();
     }
 
-    // Set up global duration toggle event listeners
-    globalDurationBtns.forEach(btn => {
+    // Handle sidebar duration button clicks
+    checkoutDurationBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            globalDurationBtns.forEach(b => b.classList.remove('active'));
+            checkoutDurationBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
             selectedDurationDays = parseInt(btn.getAttribute('data-days'), 10);
-            updateCardPrices();
+            updateCheckoutPrice();
             AudioController.playTick();
         });
     });
@@ -1517,10 +1506,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add('selected');
 
                 const privilegeId = card.getAttribute('data-privilege');
+                
+                // If selecting MVP, enforce lifetime (0) duration in sidebar
+                if (privilegeId === 'mvp') {
+                    selectedDurationDays = 0;
+                    checkoutDurationBtns.forEach(b => {
+                        if (b.getAttribute('data-days') === '0') {
+                            b.classList.add('active');
+                        } else {
+                            b.classList.remove('active');
+                            b.style.opacity = '0.3';
+                            b.style.pointerEvents = 'none';
+                        }
+                    });
+                } else {
+                    // Restore active states for other ranks
+                    checkoutDurationBtns.forEach(b => {
+                        b.style.opacity = '1';
+                        b.style.pointerEvents = 'auto';
+                    });
+                    
+                    // Keep the current active selection
+                    const activeBtn = document.querySelector('.checkout-duration-btn.active');
+                    if (activeBtn) {
+                        selectedDurationDays = parseInt(activeBtn.getAttribute('data-days'), 10);
+                    }
+                }
+
                 const durationText = (privilegeId === 'mvp') ? 'Навсегда' : 
                                      (selectedDurationDays === 7 ? '7 дней' : 
                                      (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
-                const price = parseInt(card.getAttribute('data-price'), 10);
+
+                let priceAttr = `data-price-${selectedDurationDays}`;
+                if (privilegeId === 'mvp') priceAttr = 'data-price-0';
+                const price = parseInt(card.getAttribute(priceAttr), 10);
 
                 selectedPrivilege = {
                     id: privilegeId,
@@ -1529,6 +1548,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
 
                 updateCheckoutSummary();
+                
+                // Scroll smoothly to checkout form for better UX on mobile
+                const checkoutForm = document.getElementById('checkout-form');
+                if (checkoutForm && window.innerWidth < 992) {
+                    checkoutForm.scrollIntoView({ behavior: 'smooth' });
+                }
+                
                 AudioController.playTick();
             });
         }

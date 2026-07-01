@@ -296,16 +296,6 @@
                 <p class="section-desc">Выберите подходящую услугу, введите данные и перейдите к оплате. Все привилегии выдаются автоматически.</p>
             </div>
 
-            <!-- Global Duration Switcher -->
-            <div class="store-duration-container reveal">
-                <div class="store-duration-toggle">
-                    <button type="button" class="global-duration-btn" data-days="7">7 дней</button>
-                    <button type="button" class="global-duration-btn active" data-days="30">30 дней</button>
-                    <button type="button" class="global-duration-btn" data-days="0">Навсегда</button>
-                    <div class="toggle-slider"></div>
-                </div>
-            </div>
-            
             <div class="store-grid">
                 <div class="store-main">
                     <div class="privileges-cards">
@@ -315,6 +305,7 @@
                                 <span class="privilege-badge">Level 1</span>
                                 <h3 class="privilege-title">Elite</h3>
                                 <div class="privilege-price">250 <span class="currency">₽</span></div>
+                                <div class="price-hint">от 100 ₽</div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 110 HP</li>
@@ -333,6 +324,7 @@
                                 <span class="privilege-badge gold">Level 2</span>
                                 <h3 class="privilege-title text-gold">Veteran</h3>
                                 <div class="privilege-price">400 <span class="currency">₽</span></div>
+                                <div class="price-hint">от 250 ₽</div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 120 HP</li>
@@ -352,6 +344,7 @@
                                 <span class="privilege-badge red">Level 3</span>
                                 <h3 class="privilege-title">Champion</h3>
                                 <div class="privilege-price">500 <span class="currency">₽</span></div>
+                                <div class="price-hint">от 350 ₽</div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 130 HP</li>
@@ -372,6 +365,7 @@
                                 <span class="privilege-badge purple">Top Level</span>
                                 <h3 class="privilege-title">MVP</h3>
                                 <div class="privilege-price">2000 <span class="currency">₽</span></div>
+                                <div class="price-hint">навсегда</div>
                             </div>
                             <ul class="privilege-features">
                                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Здоровье: 150 HP</li>
@@ -397,6 +391,15 @@
                                 <label for="checkout-steam-id">Steam ID (SteamID64 или ссылка)</label>
                                 <input type="text" id="checkout-steam-id" placeholder="например, 76561198000000000" required>
                                 <button type="button" class="btn-use-authorized" id="btn-use-authorized">Вставить мой ID</button>
+                            </div>
+                            
+                            <div class="form-group" id="checkout-duration-group">
+                                <label>Срок привилегии</label>
+                                <div class="checkout-durations">
+                                    <button type="button" class="checkout-duration-btn" data-days="7">7 дней</button>
+                                    <button type="button" class="checkout-duration-btn active" data-days="30">30 дней</button>
+                                    <button type="button" class="checkout-duration-btn" data-days="0">Навсегда</button>
+                                </div>
                             </div>
                             
                             <div class="form-group">
