@@ -1011,20 +1011,16 @@ document.addEventListener('DOMContentLoaded', () => {
         { rank: 10, name: "Ghost Riders", tag: "GHO", owner: "Ghost_Killer", members: "6/10", level: 2, points: 2800 }
     ];
 
-    // Skins Catalog
+    // Skins Catalog (Default CS2 Skins for Free in-game SkinChanger)
     const skinsCatalog = [
-        { id: "skin-1", title: "Maniac Jason (Premium)", category: "maniac", price: 350, rarity: "immortal", img: "assets/logo.jpg" },
-        { id: "skin-2", title: "Maniac Myers", category: "maniac", price: 250, rarity: "legendary", img: "assets/logo.jpg" },
-        { id: "skin-3", title: "Scream Ghostface", category: "maniac", price: 200, rarity: "cover", img: "assets/logo.jpg" },
-        { id: "skin-4", title: "Zombie Butcher", category: "maniac", price: 150, rarity: "common", img: "assets/logo.jpg" },
-        { id: "skin-5", title: "Survivor Lara Croft", category: "survivor", price: 200, rarity: "legendary", img: "assets/logo.jpg" },
-        { id: "skin-6", title: "Survivor Leon Kennedy", category: "survivor", price: 180, rarity: "cover", img: "assets/logo.jpg" },
-        { id: "skin-7", title: "Special Agent Ava", category: "survivor", price: 120, rarity: "epic", img: "assets/logo.jpg" },
-        { id: "skin-8", title: "Survivor Hypebeast", category: "survivor", price: 90, rarity: "common", img: "assets/logo.jpg" },
-        { id: "skin-9", title: "Bayonet Lore (Gold)", category: "weapon", price: 400, rarity: "immortal", img: "assets/logo.jpg" },
-        { id: "skin-10", title: "Karambit Fade", category: "weapon", price: 300, rarity: "legendary", img: "assets/logo.jpg" },
-        { id: "skin-11", title: "Butterfly Crimson Web", category: "weapon", price: 280, rarity: "cover", img: "assets/logo.jpg" },
-        { id: "skin-12", title: "M9 Bayonet Doppler", category: "weapon", price: 240, rarity: "epic", img: "assets/logo.jpg" }
+        { id: "skin-1", title: "AWP | Dragon Lore", category: "weapon", rarity: "immortal", img: "assets/logo.jpg" },
+        { id: "skin-2", title: "M4A4 | Howl", category: "weapon", rarity: "immortal", img: "assets/logo.jpg" },
+        { id: "skin-3", title: "AK-47 | Case Hardened", category: "weapon", rarity: "cover", img: "assets/logo.jpg" },
+        { id: "skin-4", title: "Glock-18 | Fade", category: "weapon", rarity: "cover", img: "assets/logo.jpg" },
+        { id: "skin-5", title: "Karambit | Fade", category: "knife", rarity: "legendary", img: "assets/logo.jpg" },
+        { id: "skin-6", title: "Butterfly | Crimson Web", category: "knife", rarity: "legendary", img: "assets/logo.jpg" },
+        { id: "skin-7", title: "M9 Bayonet | Doppler", category: "knife", rarity: "legendary", img: "assets/logo.jpg" },
+        { id: "skin-8", title: "Bayonet | Lore", category: "knife", rarity: "legendary", img: "assets/logo.jpg" }
     ];
 
 
@@ -1347,7 +1343,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     rarityBarClass = 'rarity-common';
             }
 
-            const cleanCategory = skin.category === 'maniac' ? 'Для Маньяка' : (skin.category === 'survivor' ? 'Для Выжившего' : 'Скин оружия');
+            const cleanCategory = skin.category === 'knife' ? 'Нож' : 'Оружие';
 
             card.innerHTML = `
                 <div class="skin-card-preview">
@@ -1361,15 +1357,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                     <h4 class="skin-card-title">${skin.title}</h4>
                     <div class="skin-card-footer">
-                        <span class="skin-card-price">${skin.price} ₽</span>
-                        <button type="button" class="btn-buy-skin" data-skin-name="${skin.title}" data-skin-price="${skin.price}">Купить</button>
+                        <span class="skin-card-price text-gold">БЕСПЛАТНО</span>
+                        <button type="button" class="btn-buy-skin" style="background: var(--bg-surface); border-color: var(--border-light); color: var(--text-primary); padding: 8px 16px;">В игре</button>
                     </div>
                 </div>
             `;
 
-            // Redirect to store on buy click
+            // Inform player how to install skin for free in game
             card.querySelector('.btn-buy-skin').addEventListener('click', () => {
-                selectSkinForPurchase(skin.id, skin.title, skin.price);
+                let cmd = skin.category === 'knife' ? '!knife' : '!ws';
+                showToast(`Чтобы бесплатно установить ${skin.title}, введите в чат на сервере команду: ${cmd}`);
+                AudioController.playTick();
             });
 
             skinsGrid.appendChild(card);
@@ -1389,23 +1387,6 @@ document.addEventListener('DOMContentLoaded', () => {
             AudioController.playTick();
         });
     });
-
-    function selectSkinForPurchase(skinId, title, price) {
-        window.location.hash = '#store';
-        
-        // Remove selections from cards
-        document.querySelectorAll('.privilege-card').forEach(c => c.classList.remove('selected'));
-        
-        // Populate form summary with Custom Skin info
-        selectedPrivilege = {
-            id: skinId,
-            name: `Скин: ${title}`,
-            price: price
-        };
-
-        updateCheckoutSummary();
-        showToast(`Выбран скин: ${title}. Заполните данные.`);
-    }
 
     renderSkins();
 
@@ -1463,23 +1444,138 @@ document.addEventListener('DOMContentLoaded', () => {
     const checkoutDurationBtns = document.querySelectorAll('.checkout-duration-btn');
     const checkoutDurationGroup = document.getElementById('checkout-duration-group');
 
+    // Premium Custom Skins array
+    const customSkinsStore = [
+        { id: "cskin-selene", title: "Бабочка «Селена»", price: 350, type: "Нож", emoji: "🦋", gradient: "linear-gradient(135deg, #1a0b2e, #4b1b8a)", desc: "Эксклюзивная бабочка с аниме-дизайном." },
+        { id: "cskin-skeleton", title: "Skeleton Anime", price: 600, type: "Персонаж", emoji: "💀", gradient: "linear-gradient(135deg, #111, #bdc3c7)", desc: "Моделька персонажа со светящимися эффектами." },
+        { id: "cskin-jason", title: "Jason Voorhees", price: 500, type: "Персонаж", emoji: "🪓", gradient: "linear-gradient(135deg, #4a0d0d, #2c0808)", desc: "Модель маньяка Пятницы 13 с озвучкой." },
+        { id: "cskin-lara", title: "Lara Croft", price: 450, type: "Персонаж", emoji: "🏹", gradient: "linear-gradient(135deg, #1e3c72, #2a5298)", desc: "Проработанный скин Лары Крофт." },
+        { id: "cskin-nebula", title: "M9 «Nebula»", price: 300, type: "Нож", emoji: "🌌", gradient: "linear-gradient(135deg, #0f2027, #203a43)", desc: "Космический M9 Bayonet с кастомным блеском." },
+        { id: "cskin-ghostface", title: "Ghostface", price: 400, type: "Персонаж", emoji: "😱", gradient: "linear-gradient(135deg, #000, #333)", desc: "Классическая маска Крика." }
+    ];
+
+    const customSkinsCards = document.querySelector('.custom-skins-cards');
+
+    function renderCustomSkinsStore() {
+        if (!customSkinsCards) return;
+        if (customSkinsCards.children.length > 0) return; // avoid duplicate rendering
+
+        customSkinsStore.forEach(skin => {
+            const card = document.createElement('div');
+            card.className = 'privilege-card reveal';
+            card.setAttribute('data-privilege', skin.id);
+            card.setAttribute('data-price-0', skin.price);
+            card.setAttribute('data-price', skin.price);
+
+            card.innerHTML = `
+                <div class="privilege-banner" style="background: ${skin.gradient};">
+                    <span class="banner-label">${skin.type.toUpperCase()}</span>
+                    <h3 class="banner-title" style="font-size: 1.4rem;">${skin.title}</h3>
+                </div>
+                <div class="skin-store-preview">
+                    <div class="skin-banner-icon" style="color: ${skin.gradient.includes('4b1b8a') ? '#9b5de5' : (skin.gradient.includes('4a0d0d') ? '#ff4940' : '#f6b949')}">${skin.emoji}</div>
+                </div>
+                <div class="privilege-header" style="margin-top: auto;">
+                    <div class="privilege-price">${skin.price} <span class="currency">₽</span></div>
+                    <div class="price-hint">навсегда</div>
+                </div>
+                <ul class="privilege-features">
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> ${skin.desc}</li>
+                    <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Виден всем на сервере</li>
+                </ul>
+                <button class="btn btn-select-privilege" type="button">Выбрать</button>
+                <div class="card-glow"></div>
+            `;
+
+            // Dynamic mouse glow
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--glow-x', `${e.clientX - rect.left}px`);
+                card.style.setProperty('--glow-y', `${e.clientY - rect.top}px`);
+            });
+
+            // Handle select click
+            card.querySelector('.btn-select-privilege').addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.privilege-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+
+                // Enforce permanent (0) duration in sidebar
+                selectedDurationDays = 0;
+                checkoutDurationBtns.forEach(b => {
+                    if (b.getAttribute('data-days') === '0') {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                        b.style.opacity = '0.3';
+                        b.style.pointerEvents = 'none';
+                    }
+                });
+
+                selectedPrivilege = {
+                    id: skin.id,
+                    name: `Скин: ${skin.title} (Навсегда)`,
+                    price: skin.price
+                };
+
+                updateCheckoutSummary();
+
+                // Scroll to checkout on mobile
+                const checkoutForm = document.getElementById('checkout-form');
+                if (checkoutForm && window.innerWidth < 992) {
+                    checkoutForm.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                AudioController.playTick();
+            });
+
+            customSkinsCards.appendChild(card);
+        });
+    }
+
+    // Set up Store Tabs
+    const storeTabBtns = document.querySelectorAll('.store-tab-btn');
+    const privilegesCards = document.querySelector('.privileges-cards');
+
+    storeTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            storeTabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const activeTab = btn.getAttribute('data-store-tab');
+            if (activeTab === 'privileges') {
+                privilegesCards.style.display = 'grid';
+                customSkinsCards.style.display = 'none';
+            } else {
+                privilegesCards.style.display = 'none';
+                customSkinsCards.style.display = 'grid';
+                renderCustomSkinsStore();
+            }
+            AudioController.playTick();
+        });
+    });
+
     function updateCheckoutPrice() {
         if (!selectedPrivilege) return;
 
         const card = document.querySelector(`.privilege-card[data-privilege="${selectedPrivilege.id}"]`);
         if (!card) return;
 
+        const isPermanent = selectedPrivilege.id.startsWith('cskin-') || selectedPrivilege.id === 'mvp';
         let priceAttr = `data-price-${selectedDurationDays}`;
-        if (selectedPrivilege.id === 'mvp') {
-            priceAttr = 'data-price-0'; // MVP is always lifetime
+        if (isPermanent) {
+            priceAttr = 'data-price-0';
         }
 
         const price = parseInt(card.getAttribute(priceAttr), 10);
-        const durationText = (selectedPrivilege.id === 'mvp') ? 'Навсегда' : 
+        const durationText = isPermanent ? 'Навсегда' : 
                              (selectedDurationDays === 7 ? '7 дней' : 
                              (selectedDurationDays === 30 ? '30 дней' : 'Навсегда'));
 
-        selectedPrivilege.name = `${card.querySelector('.privilege-title').textContent} (${durationText})`;
+        const cleanTitle = card.querySelector('.privilege-title')?.textContent || card.querySelector('.banner-title')?.textContent || '';
+        const prefix = selectedPrivilege.id.startsWith('cskin-') ? 'Скин' : 'Привилегия';
+        
+        selectedPrivilege.name = `${prefix}: ${cleanTitle} (${durationText})`;
         selectedPrivilege.price = price;
 
         updateCheckoutSummary();
@@ -1498,11 +1594,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     privilegeCards.forEach(card => {
+        // Skip dynamically created skins buttons as they bind their own click logic
+        if (card.classList.contains('skin-card') || card.getAttribute('data-privilege').startsWith('cskin-')) return;
+
         const selectBtn = card.querySelector('.btn-select-privilege');
         if (selectBtn) {
             selectBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                privilegeCards.forEach(c => c.classList.remove('selected'));
+                document.querySelectorAll('.privilege-card').forEach(c => c.classList.remove('selected'));
                 card.classList.add('selected');
 
                 const privilegeId = card.getAttribute('data-privilege');
@@ -1543,7 +1642,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 selectedPrivilege = {
                     id: privilegeId,
-                    name: `${card.querySelector('.privilege-title').textContent} (${durationText})`,
+                    name: `${card.querySelector('.banner-title')?.textContent || 'Привилегия'} (${durationText})`,
                     price: price
                 };
 

@@ -2050,6 +2050,150 @@ body:not(.home-active) .navbar {
     font-weight: 500;
 }
 
+/* --- Store Tab Switcher --- */
+.store-tabs-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: var(--space-32);
+}
+
+.store-tabs {
+    display: flex;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-full);
+    padding: 4px;
+    gap: 4px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 
+                0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.store-tab-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 10px 28px;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+    text-align: center;
+}
+
+.store-tab-btn:hover {
+    color: var(--text-primary);
+}
+
+.store-tab-btn.active {
+    background: var(--gold-300);
+    color: var(--bg-void);
+    box-shadow: 0 2px 12px rgba(212, 175, 55, 0.3);
+}
+
+/* Custom Skin Preview box in the card */
+.skin-store-preview {
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+    margin: var(--space-12) 0;
+    border-radius: var(--radius-md);
+    border: 1px dashed rgba(255, 255, 255, 0.05);
+}
+
+.skin-banner-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 0 15px currentColor);
+}
+
+/* Card Header Banner Styling */
+.privilege-banner {
+    position: relative;
+    height: 120px;
+    margin: -32px -24px 0 -24px; /* offset card padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.privilege-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0) 20%, rgba(10,10,15,0.85) 100%);
+    z-index: 1;
+}
+
+.banner-label {
+    position: relative;
+    z-index: 2;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 4px;
+}
+
+.banner-title {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* Elite Banner styling */
+.elite-banner {
+    background: linear-gradient(135deg, #1f2d3d 0%, #7f8c8d 100%);
+}
+.elite-banner .banner-title {
+    background: linear-gradient(180deg, #ffffff 0%, #bdc3c7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Veteran Banner styling */
+.veteran-banner {
+    background: linear-gradient(135deg, #151518 0%, #d4af37 100%);
+}
+.veteran-banner .banner-title {
+    background: linear-gradient(180deg, #ffe066 0%, #d4af37 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Champion Banner styling */
+.champion-banner {
+    background: linear-gradient(135deg, #6b0c0f 0%, #e52d27 100%);
+}
+.champion-banner .banner-title {
+    background: linear-gradient(180deg, #ff8080 0%, #ff1a1a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* MVP Banner styling */
+.mvp-banner {
+    background: linear-gradient(135deg, #1e093e 0%, #8a2be2 100%);
+}
+.mvp-banner .banner-title {
+    background: linear-gradient(180deg, #f0c4ff 0%, #9932cc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 12px rgba(138, 43, 226, 0.6);
+}
+
 /* --- Checkout Duration Toggle --- */
 .checkout-durations {
     display: flex;
