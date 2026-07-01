@@ -1320,7 +1320,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         items.forEach(skin => {
             const card = document.createElement('div');
-            card.className = 'skin-card reveal';
+            card.className = 'skin-card reveal visible';
             
             let rarityBadge = '';
             let rarityBarClass = '';
@@ -1661,7 +1661,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (product.id === 'champion') extraClasses = ' admin';
             if (product.id === 'mvp') extraClasses = ' mvp';
 
-            card.className = `privilege-card reveal${extraClasses}`;
+            card.className = `privilege-card reveal visible${extraClasses}`;
             card.setAttribute('data-privilege', product.id);
 
             // Setup price attributes
