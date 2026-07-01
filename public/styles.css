@@ -1909,7 +1909,7 @@ body:not(.home-active) .navbar {
 .privilege-card {
     position: relative;
     background: var(--bg-surface);
-    border: 1px solid var(--border-light);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-lg);
     padding: var(--space-24);
     display: flex;
@@ -1919,31 +1919,62 @@ body:not(.home-active) .navbar {
     transition: transform 0.25s var(--ease-out-back), border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
-.privilege-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--border-gold);
-    box-shadow: var(--shadow-md), 0 0 20px rgba(212, 175, 55, 0.05);
+/* Card 1: Elite (Silver/Metallic Theme) */
+.privilege-card:not(.premium):not(.admin):not(.mvp) {
+    border: 1px solid rgba(160, 174, 192, 0.2);
 }
 
+.privilege-card:not(.premium):not(.admin):not(.mvp):hover {
+    transform: translateY(-4px);
+    border-color: rgba(200, 200, 200, 0.5);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.02), 0 0 20px rgba(200, 200, 200, 0.05);
+}
+
+/* Card 2: Veteran (Gold Theme) */
 .privilege-card.premium {
-    border-color: var(--border-gold);
-    background: linear-gradient(180deg, rgba(212, 175, 55, 0.03) 0%, var(--bg-surface) 100%);
-    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.03);
+    border-color: rgba(212, 175, 55, 0.25);
+    background: linear-gradient(180deg, rgba(212, 175, 55, 0.02) 0%, var(--bg-surface) 100%);
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.02);
 }
 
 .privilege-card.premium:hover {
+    transform: translateY(-4px);
     border-color: var(--gold-300);
-    box-shadow: var(--shadow-lg), var(--shadow-gold);
+    box-shadow: var(--shadow-lg), var(--shadow-gold), 0 0 20px rgba(212, 175, 55, 0.06);
 }
 
+/* Card 3: Champion (Red-Gold Theme via Gradient Border) */
 .privilege-card.admin {
-    border-color: rgba(220, 53, 69, 0.2);
-    background: linear-gradient(180deg, rgba(220, 53, 69, 0.02) 0%, var(--bg-surface) 100%);
+    border: 1px solid transparent;
+    background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+                linear-gradient(135deg, rgba(220, 53, 69, 0.4) 0%, rgba(246, 185, 73, 0.4) 100%) border-box;
+    box-shadow: 0 4px 20px rgba(220, 53, 69, 0.02);
 }
 
 .privilege-card.admin:hover {
-    border-color: rgba(220, 53, 69, 0.5);
-    box-shadow: var(--shadow-md), 0 0 20px rgba(220, 53, 69, 0.08);
+    transform: translateY(-4px);
+    background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+                linear-gradient(135deg, #ff4940 0%, #f6b949 100%) border-box;
+    box-shadow: 0 12px 30px rgba(255, 73, 64, 0.12), 0 0 24px rgba(246, 185, 73, 0.08);
+}
+
+/* Card 4: MVP (Animated Purple Border + Ultra Glow Theme) */
+@keyframes borderRotate {
+    100% { background-position: 200% center; }
+}
+
+.privilege-card.mvp {
+    border: 1px solid transparent;
+    background: linear-gradient(var(--bg-surface), var(--bg-surface)) padding-box,
+                linear-gradient(135deg, #7045a8 0%, #c084fc 50%, #7045a8 100%) border-box;
+    background-size: 200% auto;
+    animation: borderRotate 4s linear infinite;
+    box-shadow: 0 8px 32px rgba(112, 69, 168, 0.15);
+}
+
+.privilege-card.mvp:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 60px rgba(112, 69, 168, 0.35), 0 0 30px rgba(168, 85, 247, 0.2);
 }
 
 .privilege-badge {
@@ -2086,28 +2117,72 @@ body:not(.home-active) .navbar {
     width: 100%;
     padding: var(--space-12);
     border-radius: var(--radius-md);
-    background: var(--bg-hover);
+    background: rgba(255, 255, 255, 0.04);
     border: 1px solid var(--border-light);
-    font-weight: 600;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    font-weight: 700;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: transform 0.2s var(--ease-out-back), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-select-privilege:hover {
-    background: var(--text-primary);
+    background: var(--white);
     color: var(--bg-void);
-    border-color: var(--text-primary);
+    border-color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
 }
 
-.btn-select-privilege.btn-gold {
+.btn-select-privilege:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Elite card button */
+.privilege-card:not(.premium):not(.admin):not(.mvp) .btn-select-privilege:hover {
+    box-shadow: 0 4px 12px rgba(200, 200, 200, 0.15);
+}
+
+/* Veteran card button (Gold) */
+.privilege-card.premium .btn-select-privilege {
     background: rgba(212, 175, 55, 0.05);
     border-color: var(--border-gold);
     color: var(--gold-200);
 }
 
-.btn-select-privilege.btn-gold:hover {
+.privilege-card.premium .btn-select-privilege:hover {
     background: var(--gold-300);
     color: var(--bg-void);
     border-color: var(--gold-300);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+}
+
+/* Champion card button (Red) */
+.privilege-card.admin .btn-select-privilege {
+    background: rgba(220, 53, 69, 0.06);
+    border-color: rgba(220, 53, 69, 0.4);
+    color: #ff6b6b;
+}
+
+.privilege-card.admin .btn-select-privilege:hover {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* MVP card button (Gold for maximum premium look) */
+.privilege-card.mvp .btn-select-privilege {
+    background: var(--gold-300);
+    color: var(--bg-void);
+    border-color: var(--gold-300);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.15);
+}
+
+.privilege-card.mvp .btn-select-privilege:hover {
+    background: var(--gold-200);
+    color: var(--bg-void);
+    border-color: var(--gold-200);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
 .privilege-card.selected {
@@ -2115,7 +2190,20 @@ body:not(.home-active) .navbar {
     box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
 }
 
+/* Selected state styling (matches their themes on select) */
 .privilege-card.selected .btn-select-privilege {
+    background: var(--gold-300) !important;
+    color: var(--bg-void) !important;
+    border-color: var(--gold-300) !important;
+}
+
+.privilege-card.admin.selected .btn-select-privilege {
+    background: var(--red) !important;
+    color: var(--white) !important;
+    border-color: var(--red) !important;
+}
+
+.privilege-card.mvp.selected .btn-select-privilege {
     background: var(--gold-300) !important;
     color: var(--bg-void) !important;
     border-color: var(--gold-300) !important;
